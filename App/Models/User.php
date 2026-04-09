@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use PDO;
+
 class User
 {
   public $conn;
@@ -28,5 +30,28 @@ class User
     ]);
 
     return $data;
+  }
+
+  public function getAllUsers()
+  {
+    $stmt = $this->conn->prepare("SELECT * FROM users");
+    $stmt->execute();
+    $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $users;
+  }
+
+  public function insertRememberToken(int $user_id, string $token)
+  {
+    $stmt = $this->conn->prepare("INSERT INTO remember_tokens (user_id, token, token_expiration_date)
+    VALUES(:user_id, :token, :token_expiration_date);
+    ");
+
+    $stmt->execute([
+      ':user_id' => $user_id,
+      ':token' => $token,
+      ':token_expiration_date' => date('Y-m-d H:i:s', time() + 30 * 24 * 60 * 60)
+    ]);
+
+    return true;
   }
 }

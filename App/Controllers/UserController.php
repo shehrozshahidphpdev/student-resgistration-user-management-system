@@ -10,14 +10,19 @@ class UserController
 
 
   public $errors;
+  public $db;
   public function __construct()
   {
     $this->errors = [];
+    $this->db = new User();
   }
 
   public function login()
   {
-    return view('login');
+    $csrf_token = generateCsrfToken();
+    return view('login', [
+      'csrf_token' => $csrf_token
+    ]);
   }
 
   public function register()
@@ -31,7 +36,11 @@ class UserController
 
   public function store($request, $profile)
   {
-    if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['register'])) {
+    if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($request['register'])) {
+      if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
+        die('csrf token dont match');
+      }
+
       $firstName = $request['first_name'];
       $lastName = $request['last_name'];
       $email = $request['email'];
@@ -39,8 +48,11 @@ class UserController
       $phone = $request['phone'];
     }
 
-    if (! $this->validateRegisterRequest($firstName, $lastName, $email, $password, $phone, $profile)) {
+    $users = $this->db->getAllUsers();
+
+    if (! $this->validateRegisterRequest($firstName, $lastName, $email, $password, $phone, $profile, $users)) {
       Session::put('old', $request);
+
       header('Location: /register');
       exit();
     }
@@ -61,19 +73,71 @@ class UserController
         'profile' => $fileName
       ];
 
-
-      $user = new User();
-      if ($user->insert($data)) {
+      if ($this->db->insert($data)) {
         Session::put('success', "Registration successfull!");
         header('Location: /');
         exit();
       };
-    } catch (\Exception) {
-      die('Data not created successfully');
+    } catch (\Exception $e) {
+      echo $e->getMessage();
     }
   }
 
-  public function validateRegisterRequest(string $firstName, string $lastName, string $email, string $password, string $phone, $profile)
+  public function attemptLogin($request)
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($request['login'])) {
+      if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
+        die('cannot proceed csrf token does not mtach');
+      }
+
+      $email = $request['email'];
+      $password = $request['password'];
+
+      if (! $this->validateLoginRequest($email, $password)) {
+        Session::put('old', $request);
+        header('Location: /');
+        exit();
+      }
+
+      $users = $this->db->getAllUsers();
+
+      foreach ($users as $user) {
+        if ($email == $user['email'] && password_verify($password, $user['password'])) {
+          $user = [
+            'id' => $user['id'],
+            'first_name' => $user['first_name'],
+            'last_name' => $user['last_name'],
+            'email' => $user['email'],
+            'role' => $user['role'],
+          ];
+
+          Session::put('user', $user);
+
+          if (isset($request['remember'])) {
+            $token = bin2hex(random_bytes(32));
+
+            setcookie('remember_me', $token, time() + (30 * 24 * 60 * 60));
+
+
+            $this->db->insertRememberToken($user['id'], $token);
+          }
+          Session::put('user', $user);
+          header('Location: /student/dashboard');
+          exit();
+        }
+      }
+      Session::put('error', 'Invalid credebtials');
+      header('Location: /');
+      exit();
+    }
+  }
+
+  public function logout()
+  {
+    dd('here');
+  }
+
+  public function validateRegisterRequest(string $firstName, string $lastName, string $email, string $password, string $phone, $profile, $users)
   {
     if (empty($firstName)) {
       $this->errors['first_name'] = "The first name field is required";
@@ -91,6 +155,12 @@ class UserController
       $this->errors['email'] = "The email flied cannot be empty";
     } else if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $this->errors['email'] = "Please Enter correct email format";
+    }
+
+    foreach ($users as $user) {
+      if ($email == $user['email']) {
+        $this->errors['email'] =  "The email has already been taken";
+      }
     }
 
     if (empty($password)) {
@@ -131,5 +201,25 @@ class UserController
     } else if ($profile['profile']['size'] > $max_allowed_size) {
       $this->errors['profile'] = "The profile size cannot be greater than 5 MB";
     }
+  }
+
+  public function validateLoginRequest(string $email, string $password)
+  {
+    if (empty($email)) {
+      $this->errors['email'] = "The email field is required";
+    } else if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      $this->errors['email'] = "Please Enter correct email format";
+    }
+
+    if (empty($password)) {
+      $this->errors['password'] = "The password Field is required";
+    }
+
+    if (count($this->errors) > 0) {
+      Session::put('errors', $this->errors);
+      return false;
+    }
+
+    return true;
   }
 }

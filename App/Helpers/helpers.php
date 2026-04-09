@@ -53,10 +53,43 @@ if (! function_exists('assets')) {
 }
 
 if (! function_exists('generateCsrfToken')) {
-  function generateCsrfToken()
+  function generateCsrfToken(): string
   {
     $csrf_token = bin2hex(random_bytes(32));
     Session::put('csrf_token', $csrf_token);
     return $csrf_token;
+  }
+}
+
+if (! function_exists('isLoggedin')) {
+  function isLoggedin()
+  {
+    if (isset($_SESSION['user'])) {
+      return true;
+    } else {
+      header('Location: /');
+    }
+  }
+}
+
+if (! function_exists('isStudent')) {
+  function isStudent()
+  {
+    if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'student') {
+      return true;
+    } else {
+      header('Location: /');
+    }
+  }
+}
+
+if (! function_exists('isAdmin')) {
+  function isAdmin()
+  {
+    if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin') {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
