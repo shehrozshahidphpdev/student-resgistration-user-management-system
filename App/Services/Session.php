@@ -4,48 +4,39 @@ namespace App\Services;
 
 class Session
 {
-
-  public function __construct()
+  public static function put($key, $value): void
   {
-    if (session_status() === PHP_SESSION_NONE) {
-      session_start();
-    }
-  }
-  public static function put($key, $value)
-  {
-    if (! isset($_SESSION[$key])) {
-      $_SESSION[$key] = $value;
-    }
-
-    return true;
+    $_SESSION[$key] = $value;
   }
 
   public static function get($key)
   {
     if (isset($_SESSION[$key])) {
       return $_SESSION[$key];
+    } else {
+      return "The $key does not exists in the session";
     }
-
-    echo "the key $key does not exists in the session";
-  }
-
-  public static function flash($key, $value)
-  {
-    if (! isset($_SESSION[$key])) {
-      $_SESSION[$key] = $value;
-    }
-
-    unset($_SESSION[$key]);
   }
 
   public static function destroy()
   {
     session_unset();
-
     session_destroy();
+  }
 
-    return true;
+  public static function unset($key)
+  {
+    if (isset($_SESSION[$key])) {
+      unset($_SESSION[$key]);
+    }
+  }
+
+  public static function flash($key)
+  {
+    if (isset($_SESSION[$key])) {
+      $value = $_SESSION[$key];
+      unset($_SESSION[$key]);
+      return $value;
+    }
   }
 }
-
-$session = new Session();

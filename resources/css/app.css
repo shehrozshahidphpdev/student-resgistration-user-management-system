@@ -1,4 +1,2 @@
 @import "tailwindcss";
-
-/* Optional: Manually specify source files if automatic detection misses them */
 @source "../views/**/*.php";

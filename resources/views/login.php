@@ -1,3 +1,10 @@
+<?php
+
+use App\Services\Session;
+
+$successMessage = Session::flash('success');
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -10,6 +17,9 @@
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <?php if (!empty($successMessage)) { ?>
+      <div class="rounded-md bg-green-300 text-green-800 p-4"><?= $successMessage ?? "" ?></div>
+    <?php } ?>
     <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login</h2>
 
     <form action="login.php" method="POST" class="space-y-4">

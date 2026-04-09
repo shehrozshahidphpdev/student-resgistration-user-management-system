@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Dba\Connection;
 use PDO;
 
 class Database
@@ -26,7 +27,7 @@ class Database
     $this->makeConnection();
   }
 
-  private function makeConnection()
+  private function makeConnection(): void
   {
     try {
       $dsn = "mysql:host=$this->host;dbname=$this->db_name";
@@ -38,12 +39,11 @@ class Database
     }
   }
 
-  public static function getInstance()
+  public static function getInstance(): object
   {
     if (self::$instance == null) {
       self::$instance = new self(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
     }
-
     return self::$instance;
   }
 

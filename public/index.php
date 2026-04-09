@@ -12,8 +12,6 @@ require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 require_once dirname(__DIR__) . '/App/config/constants.php';
 require_once dirname(__DIR__) . '/App/Helpers/helpers.php';
-
-
 $conn = Database::getInstance()->getConnection();
 $user = new UserController();
 
@@ -31,6 +29,6 @@ switch ($uri) {
     break;
 
   case '/student-register':
-    $user->attempRegistration($_POST);
+    $user->store($_POST, $_FILES);
     break;
 }
