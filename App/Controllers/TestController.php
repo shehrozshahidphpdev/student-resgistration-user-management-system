@@ -2,4 +2,4 @@
 
 namespace App\Controllers;
 
-class TestController extends Controller {}
+class TestController {}

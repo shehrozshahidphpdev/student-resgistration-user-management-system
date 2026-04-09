@@ -1,0 +1,5 @@
+# ignore the vendor files 
+vendor/
+
+# ignore the .env file to push to the github
+.env
