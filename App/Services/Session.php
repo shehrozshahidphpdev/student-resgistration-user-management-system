@@ -13,9 +13,9 @@ class Session
   {
     if (isset($_SESSION[$key])) {
       return $_SESSION[$key];
-    } else {
-      return "The $key does not exists in the session";
     }
+
+    return null;
   }
 
   public static function destroy()

@@ -33,20 +33,6 @@ users
     user_id
     image
 
-    <?php
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
-  $image = $_FILES['image'];
-  echo "<pre>";
-  $destination = "uploads";
-  $fileName = $destination . '/' .  basename($image['name']);
-  if (move_uploaded_file($image['tmp_name'], $fileName)) {
-    header('Location: index.php');
-    exit();
-  } else {
-    die("File upload Failed");
-  }
-}
- core php file upload script
-
+wfewefwefwefE1
 

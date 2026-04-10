@@ -5,6 +5,7 @@ define('PUBLIC_PATH', BASE_PATH . 'public/');
 define('VIEWS_PATH', BASE_PATH . '/resources/views/');
 define('BASE_URL', 'http://localhost:8000/');
 define('ASSETS_PATH', BASE_URL . 'public/assets/');
+define('RESOURCE_PATH', BASE_PATH . '/resources');
 
 
 // database configuraitons 

@@ -33,7 +33,7 @@ if (! function_exists('view')) {
       extract($data);
       include_once $path;
     } else {
-      echo "Sorry The $path does not exists";
+      echo "The $path does not exists";
     }
   }
 }
@@ -88,6 +88,60 @@ if (! function_exists('isAdmin')) {
   {
     if (isset($_SESSION['user']['role']) && $_SESSION['user']['role'] === 'admin') {
       return true;
+    } else {
+      header('Location: /');
+    }
+  }
+}
+
+if (! function_exists('redirectIfAuthenticated')) {
+  function redirectIfAuthenticated()
+  {
+    $user = Session::get('user');
+
+    if ($user) {
+      if ($user['role'] == 'student') {
+        header('Location: /student/dashboard');
+      } else {
+        header('Location: /admin/dashboard');
+      }
+
+      exit();
+    }
+  }
+}
+
+if (! function_exists('redirectIfYouRemember')) {
+  function redirectIfYouRemember($conn)
+  {
+    if (isset($_COOKIE['remember_me'])) {
+      $cookieToken = $_COOKIE['remember_me'];
+
+      $stmt = $conn->prepare("SELECT * FROM remember_tokens WHERE token = :token");
+      $stmt->execute([
+        ':token' => $cookieToken,
+      ]);
+
+      $user_token = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
+      $stmt->execute([
+        ':id' => $user_token['user_id'],
+      ]);
+
+      $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+
+      $user = [
+        'id' => $userData['id'],
+        'first_name' => $userData['first_name'],
+        'last_name' => $userData['last_name'],
+        'email' => $userData['email'],
+        'role' => $userData['role'],
+      ];
+
+      Session::put('user', $user);
+
+      header('Location: /student/dashboard');
     } else {
       return false;
     }

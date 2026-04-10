@@ -118,12 +118,16 @@ class UserController
 
             setcookie('remember_me', $token, time() + (30 * 24 * 60 * 60));
 
-
             $this->db->insertRememberToken($user['id'], $token);
           }
           Session::put('user', $user);
-          header('Location: /student/dashboard');
-          exit();
+          if ($user['role'] == 'student') {
+            header('Location: /student/dashboard');
+            exit();
+          } else {
+            header('Location: /admin/dashboard');
+            exit();
+          }
         }
       }
       Session::put('error', 'Invalid credebtials');
@@ -134,7 +138,17 @@ class UserController
 
   public function logout()
   {
-    dd('here');
+    $user = Session::get('user');
+
+    if (isset($user)) {
+      setcookie('remember_me', "", time() - 3600);
+      unset($_COOKIE['remember_me']);
+
+      Session::destroy();
+
+      header('Location: /');
+      exit();
+    }
   }
 
   public function validateRegisterRequest(string $firstName, string $lastName, string $email, string $password, string $phone, $profile, $users)
@@ -181,6 +195,7 @@ class UserController
       $this->errors['phone'] = "The Phone Field Cannot be empty";
     }
     $this->validateProfileImage($profile);
+
     if (count($this->errors) > 0) {
       Session::put('errors', $this->errors);
       return false;

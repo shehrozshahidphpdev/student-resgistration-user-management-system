@@ -23,7 +23,6 @@ $errors = Session::flash('errors') ?? [];
     <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Student Registration</h2>
 
     <form action="/student-register" method="POST" class="space-y-4" enctype="multipart/form-data">
-
       <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
       <div>
         <label for="name" class="block text-gray-700 mb-1">First Name</label>
