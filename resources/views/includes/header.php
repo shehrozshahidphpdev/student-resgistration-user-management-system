@@ -19,7 +19,7 @@ $activityLogs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!-- Header -->
-<header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-5 flex-shrink-0">
+<header class="h-14 bg-white border-b border-gray-200 flex items-center justify-between px-5 shrink-0">
   <div class="text-sm font-medium text-gray-800">Welcome <?= $user['first_name'] ?></div>
 
   <div class="flex items-center gap-2">

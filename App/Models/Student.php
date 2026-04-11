@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Controllers\Database;
 use App\Services\Session;
 use PDO;
 
@@ -110,7 +109,6 @@ WHERE id = :user_id
     $user = Session::get('user');
     try {
       $this->conn->beginTransaction();
-
       $stmt = $this->conn->prepare("UPDATE users SET status = :status WHERE id = :id");
 
       $stmt->execute([
@@ -118,7 +116,6 @@ WHERE id = :user_id
         ':id' => $id,
 
       ]);
-
       $stmt = $this->conn->prepare("INSERT INTO activity_logs (user_id, action, message) VALUES(:user_id, :action, :message)");
 
       $stmt->execute([
@@ -126,7 +123,6 @@ WHERE id = :user_id
         ':action' => "change sttaus",
         ':message' => "Profile Status Changed",
       ]);
-
       $this->conn->commit();
     } catch (\Exception $e) {
       $this->conn->rollback();

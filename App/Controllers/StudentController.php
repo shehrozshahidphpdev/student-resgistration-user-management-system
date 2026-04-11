@@ -56,8 +56,9 @@ class StudentController
     ]);
   }
 
-  public function updatePassword($request)
+  public function updatePassword()
   {
+    $request = $_POST;
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
 
       if (!isset($request['csrf_token']) || $request['csrf_token'] !== Session::get('csrf_token')) {
@@ -86,8 +87,11 @@ class StudentController
     }
   }
 
-  public function updateProfile($request, $profile)
+  public function updateProfile()
   {
+    $request = $_POST;
+    $profile = $_FILES;
+
     if (! isset($request['csrf_token']) || $request['csrf_token'] !== Session::get('csrf_token')) {
       die('sorry csrf token mismatch');
     }

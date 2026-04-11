@@ -40,8 +40,7 @@ class AdminController
     $result = $this->student->deleteStudent($id);
     if ($result) {
       Session::put('success', "Student Profile Deleted Successfully");
-      header('Location: /admin/dashboard/students');
-      exit();
+      redirect('/admin/dashboard/students');
     }
   }
 
@@ -53,8 +52,7 @@ class AdminController
     $result = $this->student->updateStatus($id, $status);
     if ($result) {
       Session::put('success', "Status changed successfully");
-      header('Location: /admin/dashboard/students');
-      exit();
+      redirect('/admin/dashboard/students');
     }
   }
 

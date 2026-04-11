@@ -40,57 +40,60 @@ $success = Session::flash('success');
           </div>
         <?php   } ?>
 
-        <h1 class="text-base font-medium text-gray-800 mb-5">Profile / Edit</h1>
+        <div class="card shadow-xl rounded-lg p-10">
+          <h1 class="text-base font-medium text-gray-800 mb-5">Profile / Edit</h1>
 
-        <div class="form-wrapper">
-          <form action="/student/profile/update" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
+          <div class="form-wrapper">
+            <form action="/student/profile/update" method="post" enctype="multipart/form-data">
+              <input type="hidden" name="csrf_token" value="<?= $csrf_token ?>">
 
-            <div class="flex gap-5">
-              <div class="group w-full">
+              <div class="flex gap-5">
+                <div class="group w-full">
 
-                <div class="mb-2 w-full">
-                  <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">First Name</label>
-                  <input type="text" id="first_name" value="<?= $data['first_name'] ?>" name="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Ahmed" />
+                  <div class="mb-2 w-full">
+                    <label for="first_name" class="block mb-2.5 text-sm font-medium text-heading">First Name</label>
+                    <input type="text" id="first_name" value="<?= $data['first_name'] ?>" name="first_name" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Ahmed" />
+                  </div>
+                  <p class="text-rose-500"><?= $errors['first_name'] ?? "" ?></p>
                 </div>
-                <p class="text-rose-500"><?= $errors['first_name'] ?? "" ?></p>
-              </div>
-              <div class="group w-full">
-                <div class="mb-2 w-full">
-                  <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Last Name</label>
-                  <input type="last_name" id="last_name" name="last_name" value="<?= $data['last_name'] ?>" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Khan" />
+                <div class="group w-full">
+                  <div class="mb-2 w-full">
+                    <label for="last_name" class="block mb-2.5 text-sm font-medium text-heading">Last Name</label>
+                    <input type="last_name" id="last_name" name="last_name" value="<?= $data['last_name'] ?>" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="Khan" />
+                  </div>
+                  <p class="text-rose-500"><?= $errors['last_name'] ?? "" ?></p>
                 </div>
-                <p class="text-rose-500"><?= $errors['last_name'] ?? "" ?></p>
               </div>
-            </div>
-            <div class="flex gap-5">
-              <div class="group w-full">
-                <div class="mb-2 w-full">
-                  <label for="phone" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
-                  <input type="text" id="phone" name="phone" value="<?= $data['phone'] ?>" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="09887654363" />
+              <div class="flex gap-5">
+                <div class="group w-full">
+                  <div class="mb-2 w-full">
+                    <label for="phone" class="block mb-2.5 text-sm font-medium text-heading">Phone</label>
+                    <input type="text" id="phone" name="phone" value="<?= $data['phone'] ?>" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" placeholder="09887654363" />
+                  </div>
+                  <p class="text-rose-500"><?= $errors['phone'] ?? "" ?></p>
                 </div>
-                <p class="text-rose-500"><?= $errors['phone'] ?? "" ?></p>
-              </div>
-              <div class="group w-full">
-                <div class="mb-2 w-full">
-                  <label for="profile" class="block mb-2.5 text-sm font-medium text-heading">Profile</label>
-                  <input type="file" id="profile" name="profile" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" />
+                <div class="group w-full">
+                  <div class="mb-2 w-full">
+                    <label for="profile" class="block mb-2.5 text-sm font-medium text-heading">Profile</label>
+                    <input type="file" id="profile" name="profile" class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body" />
+                  </div>
+                  <p class="text-rose-500"><?= $errors['profile'] ?? "" ?></p>
                 </div>
-                <p class="text-rose-500"><?= $errors['profile'] ?? "" ?></p>
-              </div>
 
-            </div>
-            <div class="mt-3 flex gap-3">
-              <button type="submit" class="rounded-md px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white">
-                Save
-              </button>
-              <a href="/student/dashboard" class="rounded-md px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white">
-                Back
-              </a>
-            </div>
-          </form>
+              </div>
+              <div class="mt-3 flex gap-3">
+                <button type="submit" class="rounded-md px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white">
+                  Save
+                </button>
+                <a href="/student/dashboard" class="rounded-md px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white">
+                  Back
+                </a>
+              </div>
+            </form>
 
+          </div>
         </div>
+
       </main>
     </div>
   </div>

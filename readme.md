@@ -1,38 +1,10 @@
-set up the project base 
+student management system
 
+<!-- to run the project on local -->
+open project root in vs code
 
+change directory to public 
 
+run project on local 8000 port 
 
-
-
-
-
-
-
-// requirements 
-
-users 
-
-
-users
-
-  first_name 
-  last_name
-  email
-  role // student , admin
-  status // enum [active, blocked]
-  password
-  remember_token
-  remember_token_expires_at
-  phone 
-  profile
-  password
-
-  profile_photos
-    id
-    user_id
-    image
-
-
-wfewefwefwefE1
-
+done 

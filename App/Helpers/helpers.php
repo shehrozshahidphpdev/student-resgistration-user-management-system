@@ -112,8 +112,9 @@ if (! function_exists('redirectIfAuthenticated')) {
 }
 
 if (! function_exists('redirectIfYouRemember')) {
-  function redirectIfYouRemember($conn)
+  function redirectIfYouRemember()
   {
+    $conn = $GLOBALS['conn'];
     if (isset($_COOKIE['remember_me'])) {
       $cookieToken = $_COOKIE['remember_me'];
 

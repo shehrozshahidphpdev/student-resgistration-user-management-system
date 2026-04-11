@@ -51,14 +51,14 @@ $successMessage = Session::flash('success') ?? null;
               <div class="group w-full">
                 <div class="mb-5 ">
                   <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Old Password</label>
-                  <input type="text" id="password" name="old_password" value="<?= $old['old_password'] ?? "" ?>" class="bg-neutral-secondary-medium  border-gray-800 border-2 text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs " />
+                  <input type="text" id="password" name="old_password" value="<?= $old['old_password'] ?? "" ?>" placeholder="Enter old password" class="bg-neutral-secondary-medium  border-gray-800 border-2 text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs " />
                   <p class="text-rose-500"><?= $errors['old_password'] ?? "" ?></p>
                 </div>
               </div>
               <div class="group w-full">
                 <div class="mb-5 ">
                   <label for="password" class="block mb-2.5 text-sm font-medium text-heading">New Password</label>
-                  <input type="text" id="password" name="new_password" value="<?= $old['new_password'] ?? "" ?>" class="bg-neutral-secondary-medium  border-gray-800 border-2 text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs " />
+                  <input type="text" id="password" name="new_password" value="<?= $old['new_password'] ?? "" ?>" placeholder="Enter New Password" class="bg-neutral-secondary-medium  border-gray-800 border-2 text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs " />
                   <p class="text-rose-500"><?= $errors['new_password'] ?? "" ?></p>
                 </div>
               </div>
@@ -67,6 +67,10 @@ $successMessage = Session::flash('success') ?? null;
               <button type="submit" name="submit" class="px-6 py-2 bg-purple-500 rounded-lg text-white">
                 Save
               </button>
+
+              <a href="/student/dashboard" class="px-6 py-2 bg-gray-500 rounded-lg text-white">
+                Back
+              </a>
             </div>
           </form>
 

@@ -34,8 +34,11 @@ class UserController
     ]);
   }
 
-  public function store($request, $profile)
+  public function store()
   {
+    $request = $_POST;
+    $profile = $_FILES;
+
     if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($request['register'])) {
       if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
         die('csrf token dont match');
@@ -80,8 +83,9 @@ class UserController
     }
   }
 
-  public function attemptLogin($request)
+  public function attemptLogin()
   {
+    $request = $_POST;
     if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($request['login'])) {
       if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
         die('cannot proceed csrf token does not mtach');
@@ -135,8 +139,9 @@ class UserController
     }
   }
 
-  public function logout($request)
+  public function logout()
   {
+    $request = $_POST;
     if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
       die('cannot proceed csrf token does not mtach');
     }

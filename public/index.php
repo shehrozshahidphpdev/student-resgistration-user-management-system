@@ -4,16 +4,9 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 
 use App\Controllers\AdminController;
-use App\Controllers\DashboardController;
-
-
-
 use App\Controllers\Database;
 use App\Controllers\StudentController;
 use App\Controllers\UserController;
-use App\Services\Session;
-
-
 
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
@@ -22,18 +15,19 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 require_once dirname(__DIR__) . '/App/config/constants.php';
 require_once dirname(__DIR__) . '/App/Helpers/helpers.php';
+
 $conn = Database::getInstance()->getConnection();
 $user = new UserController();
 $student = new StudentController();
 $admin = new AdminController();
+
 $uri = $_SERVER['REQUEST_URI'];
 
 $uri = parse_url($uri, PHP_URL_PATH);
 
 switch ($uri) {
   case '/':
-    redirectIfAuthenticated();
-    redirectIfYouRemember($conn);
+    redirectIfAuthenticated() || redirectIfYouRemember();
     $user->login();
     break;
 
@@ -43,12 +37,12 @@ switch ($uri) {
     break;
 
   case '/student-register':
-    $user->store($_POST, $_FILES);
+    $user->store();
     break;
 
   case '/login':
     redirectIfAuthenticated();
-    $user->attemptLogin($_POST);
+    $user->attemptLogin();
     break;
 
   case '/student/dashboard':
@@ -68,14 +62,13 @@ switch ($uri) {
 
   case '/student/update-password':
     isLoggedin() && isStudent();
-    $student->updatePassword($_POST);
+    $student->updatePassword();
     break;
 
   case '/student/profile/update':
     isLoggedin() && isStudent();
-    $student->updateProfile($_POST, $_FILES);
+    $student->updateProfile();
     break;
-
 
   case '/admin/dashboard':
     isLoggedin() && isAdmin();
@@ -100,16 +93,18 @@ switch ($uri) {
   case '/admin/dashboard/students/activities':
     isLoggedin() && isAdmin();
     $admin->activityLogs();
+    break;
 
   case '/not-allowed':
-    return view('access-denied');
+    view('access-denied');
     break;
 
   case '/logout':
     isLoggedin();
-    $user->logout($_POST);
+    $user->logout();
     break;
 
   default:
-    return view('404');
+    view('404');
+    break;
 }
