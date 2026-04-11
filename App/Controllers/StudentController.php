@@ -21,16 +21,10 @@ class StudentController
 
   public function index()
   {
-    return view('student.dashboard');
-  }
-
-  public function profile()
-  {
     $user = Session::get('user');
     $user = $this->user->getUserData($user['id']);
-
-    return view('student.profile', [
-      'data' => $user
+    return view('student.dashboard', [
+      'data' => $user,
     ]);
   }
 

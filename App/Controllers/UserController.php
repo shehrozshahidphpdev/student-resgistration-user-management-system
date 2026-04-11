@@ -126,7 +126,7 @@ class UserController
           if ($user['role'] == 'student') {
             redirect('/student/dashboard');
           } else {
-            redirect('/admin/dashboard/dashboard');
+            redirect('/admin/dashboard');
           }
         }
       }
@@ -208,7 +208,7 @@ class UserController
 
   public function validateProfileImage(array $profile)
   {
-    $alllowedMimes = ['jpg', 'png', 'webp'];
+    $alllowedMimes = ['jpg', 'png', 'webp', 'JPG, WEBP', 'PNG'];
     $max_allowed_size = 10000;
     $profileName = $profile['profile']['name'];
     $profileMimeType = pathinfo($profileName, PATHINFO_EXTENSION);
@@ -228,16 +228,13 @@ class UserController
     } else if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
       $this->errors['email'] = "Please Enter correct email format";
     }
-
     if (empty($password)) {
       $this->errors['password'] = "The password Field is required";
     }
-
     if (count($this->errors) > 0) {
       Session::put('errors', $this->errors);
       return false;
     }
-
     return true;
   }
 }

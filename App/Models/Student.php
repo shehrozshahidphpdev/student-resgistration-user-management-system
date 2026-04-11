@@ -138,17 +138,18 @@ WHERE id = :user_id
   public function getAllstudentsActicities()
   {
     $stmt = $this->conn->prepare("
-  SELECT * FROM
-  activity_logs
-  INNER JOIN users
+    SELECT * FROM
+    activity_logs
+    INNER JOIN users
     ON
     activity_logs.user_id = users.id
     WHERE role = :role
+    ORDER BY users.id DESC
 ");
     $stmt->execute([
       ':role' => 'student',
     ]);
-    $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    return $students;
+    $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    return $activities;
   }
 }

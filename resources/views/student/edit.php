@@ -40,7 +40,7 @@ $success = Session::flash('success');
           </div>
         <?php   } ?>
 
-        <h1 class="text-base font-medium text-gray-800 mb-5">Profile Edit</h1>
+        <h1 class="text-base font-medium text-gray-800 mb-5">Profile / Edit</h1>
 
         <div class="form-wrapper">
           <form action="/student/profile/update" method="post" enctype="multipart/form-data">
@@ -84,7 +84,7 @@ $success = Session::flash('success');
               <button type="submit" class="rounded-md px-6 py-2 bg-purple-500 hover:bg-purple-600 text-white">
                 Save
               </button>
-              <a href="/student/dashboard/profile" class="rounded-md px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white">
+              <a href="/student/dashboard" class="rounded-md px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white">
                 Back
               </a>
             </div>

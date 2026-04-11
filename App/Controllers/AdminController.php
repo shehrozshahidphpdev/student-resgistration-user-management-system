@@ -40,7 +40,7 @@ class AdminController
     $result = $this->student->deleteStudent($id);
     if ($result) {
       Session::put('success', "Student Profile Deleted Successfully");
-      header('Location: /admin/dashboard/dashboard/students');
+      header('Location: /admin/dashboard/students');
       exit();
     }
   }
@@ -53,7 +53,7 @@ class AdminController
     $result = $this->student->updateStatus($id, $status);
     if ($result) {
       Session::put('success', "Status changed successfully");
-      header('Location: /admin/dashboard/dashboard/students');
+      header('Location: /admin/dashboard/students');
       exit();
     }
   }
@@ -61,6 +61,7 @@ class AdminController
   public function activityLogs()
   {
     $activities = $this->student->getAllstudentsActicities();
+    // dd($activities);
     return view('admin.student-activities', [
       'activities' => $activities
     ]);

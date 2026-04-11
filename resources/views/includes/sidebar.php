@@ -22,18 +22,18 @@
          Dashboard
        </a>
        <?php if ($user['role'] == 'admin') { ?>
-         <a href="/admin/dashboard/dashboard/students" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm  text-gray-500 hover:00 hover:text-gray-800  font-medium">
+         <a href="/admin/dashboard/students" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm  text-gray-500 hover:00 hover:text-gray-800  font-medium">
            <i class="fa-solid fa-user w-4 text-gray-600 text-xs"></i>
            Students
          </a>
        <?php   } ?>
 
-       <a href="/student/dashboard/profile" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:00 hover:text-gray-800 bg-gray-1transition">
+       <!-- <a href="/student/dashboard/profile" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:00 hover:text-gray-800 bg-gray-1transition">
          <i class="fa-solid fa-user w-4 text-gray-400 text-xs"></i>
          My Profile
-       </a>
+       </a> -->
        <?php if ($user['role'] == 'admin') { ?>
-         <a href="/admin/dashboard/dashboard/students/activities" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition">
+         <a href="/admin/dashboard/students/activities" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition">
            <i class="fa-solid fa-clock-rotate-left w-4 text-gray-400 text-xs"></i>
            Activity Log
          </a>

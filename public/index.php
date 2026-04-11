@@ -56,11 +56,6 @@ switch ($uri) {
     $student->index();
     break;
 
-  case '/student/dashboard/profile':
-    isLoggedin() && isStudent();
-    $student->profile();
-    break;
-
   case '/student/dashboard/edit-profile':
     isLoggedin() && isStudent();
     $student->editProfile();

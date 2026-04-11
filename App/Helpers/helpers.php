@@ -103,7 +103,7 @@ if (! function_exists('redirectIfAuthenticated')) {
       if ($user['role'] == 'student') {
         header('Location: /student/dashboard');
       } else {
-        header('Location: /admin/dashboard/dashboard');
+        header('Location: /admin/dashboard');
       }
 
       exit();

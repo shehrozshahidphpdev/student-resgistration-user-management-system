@@ -39,7 +39,7 @@ $success = Session::flash('success');
 
         <!-- Search Bar -->
         <div class="flex items-center gap-2 mb-4">
-          <form action="/admin/dashboard/dashboard/students" method="get" class="flex gap-3">
+          <form action="/admin/dashboard/students" method="get" class="flex gap-3">
             <div class="relative flex-1 max-w-sm">
               <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
               </span>
@@ -56,7 +56,7 @@ $success = Session::flash('success');
             </button>
           </form>
 
-          <a href="/admin/dashboard/dashboard/students"
+          <a href="/admin/dashboard/students"
             class="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 hover:text-gray-700 transition-colors">
             <i class="fa fa-times text-xs"></i>
             Clear
