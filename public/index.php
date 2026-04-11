@@ -106,11 +106,15 @@ switch ($uri) {
     isLoggedin() && isAdmin();
     $admin->activityLogs();
 
+  case '/not-allowed':
+    return view('access-denied');
+    break;
+
   case '/logout':
     isLoggedin();
-    $user->logout();
+    $user->logout($_POST);
     break;
 
   default:
-    die("Sorry the Page you are looking for is not found!");
+    return view('404');
 }

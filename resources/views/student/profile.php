@@ -26,7 +26,7 @@ $user = Session::get('user');
     <!-- Main -->
     <div class="flex-1 flex flex-col overflow-hidden">
 
-      <?= require_once VIEWS_PATH . '/includes/header.php' ?>
+      <?php require_once VIEWS_PATH . '/includes/header.php' ?>
 
 
       <!-- Content -->

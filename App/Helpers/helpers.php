@@ -103,7 +103,7 @@ if (! function_exists('redirectIfAuthenticated')) {
       if ($user['role'] == 'student') {
         header('Location: /student/dashboard');
       } else {
-        header('Location: /admin/dashboard');
+        header('Location: /admin/dashboard/dashboard');
       }
 
       exit();
@@ -144,6 +144,17 @@ if (! function_exists('redirectIfYouRemember')) {
       header('Location: /student/dashboard');
     } else {
       return false;
+    }
+  }
+}
+
+
+if (! function_exists('redirect')) {
+  function redirect($path)
+  {
+    if (! is_null($path)) {
+      header("Location: $path");
+      exit();
     }
   }
 }

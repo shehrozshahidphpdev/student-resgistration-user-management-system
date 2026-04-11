@@ -26,7 +26,7 @@ $success = Session::flash('success');
     <!-- Main -->
     <div class="flex-1 flex flex-col overflow-hidden">
 
-      <?= require_once VIEWS_PATH . '/includes/header.php' ?>
+      <?php require_once VIEWS_PATH . '/includes/header.php' ?>
 
       <!-- Content -->
       <main class="flex-1 overflow-y-auto p-5">
@@ -39,22 +39,28 @@ $success = Session::flash('success');
 
         <!-- Search Bar -->
         <div class="flex items-center gap-2 mb-4">
-          <div class="relative flex-1 max-w-sm">
-            <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-              <i class="fa fa-search text-sm"></i>
-            </span>
-            <input
-              type="text"
-              id="searchInput"
-              placeholder="Search students..."
-              class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 text-gray-700 placeholder-gray-400" />
-          </div>
-          <button
+          <form action="/admin/dashboard/dashboard/students" method="get" class="flex gap-3">
+            <div class="relative flex-1 max-w-sm">
+              <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
+              </span>
+              <input
+                type="text"
+                name="search"
+                id="searchInput"
+                placeholder="Search students..."
+                class="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-gray-300 text-gray-700 placeholder-gray-400" />
 
+            </div>
+            <button type="submit" class="px-6 py-2 bg-green-300 text-white rounded-lg">
+              search
+            </button>
+          </form>
+
+          <a href="/admin/dashboard/dashboard/students"
             class="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-500 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 hover:text-gray-700 transition-colors">
             <i class="fa fa-times text-xs"></i>
             Clear
-          </button>
+          </a>
         </div>
 
         <!-- Table -->
@@ -109,32 +115,6 @@ $success = Session::flash('success');
   </div>
 
   <script>
-    // Search logic
-    const searchInput = document.getElementById('searchInput');
-
-    searchInput.addEventListener('input', filterTable);
-
-    function filterTable() {
-      const query = searchInput.value.toLowerCase().trim();
-      const rows = document.querySelectorAll('.student-row');
-      let visibleCount = 0;
-
-      rows.forEach(row => {
-        const text = row.innerText.toLowerCase();
-        const match = text.includes(query);
-        row.classList.toggle('hidden', !match);
-        if (match) visibleCount++;
-      });
-
-      document.getElementById('noResults').classList.toggle('hidden', visibleCount > 0);
-    }
-
-    function clearSearch() {
-      searchInput.value = '';
-      filterTable();
-      searchInput.focus();
-    }
-
     // Dropdown toggle
     function toggle(id) {
       const all = ['notif-dd'];

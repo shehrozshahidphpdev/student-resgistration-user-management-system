@@ -2,18 +2,21 @@
 
 namespace App\Controllers;
 
+use App\Models\Student;
 use App\Models\User;
 use App\Services\Session;
 
 class StudentController
 {
   public $errors;
-  public $db;
+  public $user;
+  public $student;
 
   public function __construct()
   {
     $this->errors = [];
-    $this->db = new User();
+    $this->student = new Student();
+    $this->user = new User();
   }
 
   public function index()
@@ -24,7 +27,7 @@ class StudentController
   public function profile()
   {
     $user = Session::get('user');
-    $user = $this->db->getUserData($user['id']);
+    $user = $this->user->getUserData($user['id']);
 
     return view('student.profile', [
       'data' => $user
@@ -35,7 +38,7 @@ class StudentController
   {
     $csrf_token = generateCsrfToken();
     $user = Session::get('user');
-    $user = $this->db->getUserData($user['id']);
+    $user = $this->user->getUserData($user['id']);
     $data = [];
     $data = [
       'first_name' => $user['first_name'],
@@ -68,7 +71,7 @@ class StudentController
       }
 
       $user = Session::get('user');
-      $currentUser = $this->db->getUserData($user['id']);
+      $currentUser = $this->user->getUserData($user['id']);
 
       $oldHashedPassword = $currentUser['password'];
 
@@ -77,16 +80,14 @@ class StudentController
 
       if (! $this->validateUpdatePasswords($oldPassword, $oldHashedPassword, $newPassword)) {
         Session::put('old', $request);
-        header('Location: /student/dashboard/password');
-        exit();
+        redirect('/student/dashboard/password');
       }
 
-      $updated = $this->db->updatePassword($currentUser['id'], $newPassword);
+      $updated = $this->student->updatePassword($currentUser['id'], $newPassword);
 
       if ($updated) {
         Session::put('success', "Password Updated successfully!");
-        header('Location: /student/dashboard/password');
-        exit();
+        redirect('/student/dashboard/password');
       }
     }
   }
@@ -104,10 +105,9 @@ class StudentController
     $phone = $request['phone'];
     $profile_name = $profile['profile']['name'];
 
-    if (! $this->validateUpdateProfileRequest($first_name, $last_name, $phone, $profile, $update = true)) {
+    if (! $this->validateUpdateProfileRequest($first_name, $last_name, $phone, $profile)) {
       Session::put('old', $request);
-      header('Location: /student/dashboard/edit-profile');
-      exit();
+      redirect('/student/dashboard/edit-profile');
     }
 
     try {
@@ -117,7 +117,7 @@ class StudentController
         $fileName = $destination . '/' .  basename($image['name']);
         move_uploaded_file($image['tmp_name'], $fileName);
       } else {
-        $userData = $this->db->getUserData($user['id']);
+        $userData = $this->user->getUserData($user['id']);
         $fileName = $userData['profile'];
       }
 
@@ -132,9 +132,9 @@ class StudentController
 
       $userId = $user['id'];
 
-      if ($this->db->updateStudentProfile($data, $userId)) {
+      if ($this->student->updateStudentProfile($data, $userId)) {
 
-        $userData = $this->db->getUserData($user['id']);
+        $userData = $this->user->getUserData($user['id']);
 
         Session::put('user', [
           'id' => $userData['id'],
@@ -145,8 +145,7 @@ class StudentController
         ]);
 
         Session::put('success', "Profile Updated  successfully");
-        header('Location: /student/dashboard/edit-profile');
-        exit();
+        redirect('/student/dashboard/edit-profile');
       }
     } catch (\Exception $e) {
       echo $e->getMessage();

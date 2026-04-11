@@ -10,11 +10,11 @@ class UserController
 
 
   public $errors;
-  public $db;
+  public $user;
   public function __construct()
   {
     $this->errors = [];
-    $this->db = new User();
+    $this->user = new User();
   }
 
   public function login()
@@ -48,13 +48,11 @@ class UserController
       $phone = $request['phone'];
     }
 
-    $users = $this->db->getAllUsers();
+    $users = $this->user->getAllUsers();
 
     if (! $this->validateRegisterRequest($firstName, $lastName, $email, $password, $phone, $profile, $users)) {
       Session::put('old', $request);
-
-      header('Location: /register');
-      exit();
+      redirect('/register');
     }
 
     try {
@@ -73,10 +71,9 @@ class UserController
         'profile' => $fileName
       ];
 
-      if ($this->db->insert($data)) {
+      if ($this->user->insert($data)) {
         Session::put('success', "Registration successfull!");
-        header('Location: /');
-        exit();
+        redirect('/');
       };
     } catch (\Exception $e) {
       echo $e->getMessage();
@@ -95,14 +92,19 @@ class UserController
 
       if (! $this->validateLoginRequest($email, $password)) {
         Session::put('old', $request);
-        header('Location: /');
-        exit();
+        redirect('/');
       }
 
-      $users = $this->db->getAllUsers();
+      $users = $this->user->getAllUsers();
 
       foreach ($users as $user) {
         if ($email == $user['email'] && password_verify($password, $user['password'])) {
+
+          // check if the user is blocked or not 
+          if ($user['status'] == 'blocked') {
+            redirect('/not-allowed');
+          }
+
           $user = [
             'id' => $user['id'],
             'first_name' => $user['first_name'],
@@ -118,36 +120,37 @@ class UserController
 
             setcookie('remember_me', $token, time() + (30 * 24 * 60 * 60));
 
-            $this->db->insertRememberToken($user['id'], $token);
+            $this->user->insertRememberToken($user['id'], $token);
           }
           Session::put('user', $user);
           if ($user['role'] == 'student') {
-            header('Location: /student/dashboard');
-            exit();
+            redirect('/student/dashboard');
           } else {
-            header('Location: /admin/dashboard');
-            exit();
+            redirect('/admin/dashboard/dashboard');
           }
         }
       }
       Session::put('error', 'Invalid credebtials');
-      header('Location: /');
-      exit();
+      redirect('/');
     }
   }
 
-  public function logout()
+  public function logout($request)
   {
-    $user = Session::get('user');
+    if (! isset($request['csrf_token']) ||  $request['csrf_token'] !== Session::get('csrf_token')) {
+      die('cannot proceed csrf token does not mtach');
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $user = Session::get('user');
 
-    if (isset($user)) {
-      setcookie('remember_me', "", time() - 3600);
-      unset($_COOKIE['remember_me']);
-
-      Session::destroy();
-
-      header('Location: /');
-      exit();
+      if (isset($user)) {
+        setcookie('remember_me', "", time() - 3600);
+        unset($_COOKIE['remember_me']);
+        Session::destroy();
+        redirect('/');
+      }
+    } else {
+      die("Something went wrong");
     }
   }
 
